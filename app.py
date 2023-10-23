@@ -5,3 +5,21 @@ app = Flask(__name__)
 def index():
     
     return render_template('index.html',movieListDefault = movieListDefault)
+@app.route('/movieDetail/<int:movieId>')
+def movieDetail(movieId):
+    movieTitle = ""
+    moviePoster = ""
+    movieDes = ""
+    movieCountry = ""
+    movieRuntime = ""
+    for movie in movieListDefault:
+        if movie.movieId == movieId:
+            movieTitle = movie.title
+            moviePoster = movie.poster
+            movieDes = movie.description
+            movieCountry = movie.country
+            movieRuntime = movie.runtime
+            
+        # else:
+        #     return None
+    return render_template('movieDetail.html',movieId=movieId, movieTitle=movieTitle,moviePoster=moviePoster,movieDes=movieDes,movieCountry=movieCountry,movieRuntime=movieRuntime)

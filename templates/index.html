@@ -10,7 +10,7 @@
         <div class="card-body">
           <h5 class="card-title">{{movie.title}}</h5>
           
-          <a href="#" class="btn btn-primary">View Times</a>
+          <a href="{{url_for('movieDetail',movieId=movie.movieId)}}" class="btn btn-primary">View Times</a>
         </div>
      </div>
     </div>
