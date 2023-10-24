@@ -1,0 +1,126 @@
+{% extends "base.html" %} 
+{% block content %}
+<div style="background-color: rgb(49, 48, 48);color: white;">
+    <div style="padding: 10% 20%;"> 
+    <div class="row">
+        <div class="col-8"><h3>Manage Movies & Screens</h3></div>
+        <div class="col-4" style="text-align: end;"><a type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#movieModal"><span style="color: rgb(63, 156, 77);font-size: 20px;padding: 10px;"><i class="fas fa-plus-circle"></i></span> Add Movie</a></div>
+    </div>
+     <!--add movie modal -->
+     <div
+     class="modal fade"
+     id="movieModal"
+     tabindex="-1"
+     aria-labelledby="loginModalLabel"
+     aria-hidden="true"
+   >
+     <div class="modal-dialog modal-dialog-centered" style="color: black;">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h1 class="modal-title fs-5" id="loginModalLabel">
+             Add Movie
+           </h1>
+           <button
+             type="button"
+             class="btn-close"
+             data-bs-dismiss="modal"
+             aria-label="Close"
+           ></button>
+         </div>
+         <div class="modal-body">
+           <form
+             action="/addMovie"
+             method="post"
+             class="needs-validation"
+             novalidate
+           >
+             <div class="mb-3">
+               <label for="title" class="col-form-label">Title:</label>
+               <input
+                 type="text"
+                 class="form-control"
+                 name="title"
+                 required
+               />
+               <div class="invalid-feedback">
+                 title can not be empty
+               </div>
+             </div>
+             <div class="mb-3">
+                <label for="language" class="col-form-label">Language:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="language"
+                  required
+                />
+                <div class="invalid-feedback">
+                    language can not be empty
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="genre" class="col-form-label">Genre:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="genre"
+                  required
+                />
+                <div class="invalid-feedback">
+                    genre can not be empty
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="reDate" class="col-form-label">Release Date:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="reDate"
+                  required
+                />
+                <div class="invalid-feedback">
+                    please select valid date
+                </div>
+              </div>
+             <div class="mb-3">
+               <button
+                 type="submit"
+                 class="btn btn-primary mb-3"
+                 style="margin-left: 40%"
+               >
+                 Add Movie
+               </button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+   <!-- add movie modal -->
+    <hr>
+    {% for movie in movieListDefault %}
+    <div class="row">
+        <div class="col-4">
+            <img src="{{movie.poster}}" alt="{{movie.title}}" style="width: 200px;height: 300px;">
+        </div>
+        <div class="col-8">
+            <div class="row"><h6>{{movie.title}}</h6></div>
+            {% for screen in screenList%}
+                {%if movie.movieId == screen.movieId%}
+                    <div class="row">
+                        <div class="col d-flex">
+                            <button class="btn btn-info" disabled>{{screen.scheduledDate}}  {{screen.scheduledTime}}</button>
+                        </div>                        
+                    </div>
+                    <br>
+                {%endif%}
+            {%endfor%}
+        </div>
+    </div>
+    <br>
+    {%endfor%}
+    </div>
+</div>
+{% endblock %}

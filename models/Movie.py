@@ -14,7 +14,7 @@ class Movie:
         self.__reDate = reDate
         Movie.nextId += 1
         self.movieTimes = []
-        self.data = requests.get(f'http://www.omdbapi.com/?t={self.title}&apikey={self.APIKey}').json()
+        self.data = requests.get(f'http://www.omdbapi.com/?t={self.title}&apikey={Movie.APIKey}').json()
         
     @property
     def movieId(self):

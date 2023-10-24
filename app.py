@@ -4,6 +4,8 @@ from ScreenListData import screenList
 from SeatListData import seatList
 from CustomerListData import customerList
 from AdminListData import adminList
+from StaffListData import staffList
+from models.Movie import Movie
 app = Flask(__name__)
 app.secret_key = "admin123"
 @app.route('/')
@@ -26,7 +28,7 @@ def index():
 def login_post():
     email = request.form.get("email")
     password = request.form.get("password")
-    userList = adminList + customerList
+    userList = adminList + customerList + staffList
     for user in userList:
         if user.userName == email and user.password == password:
             session["username"] = email
@@ -77,3 +79,19 @@ def movieDetail(movieId):
     return render_template('movieDetail.html',movieId=movieId, movieTitle=movieTitle,moviePoster=moviePoster,movieDes=movieDes,
                            movieLang=movieLang,movieRDate=movieRDate,movieCountry=movieCountry,movieRuntime=movieRuntime,movieGenre=movieGenre,isMovieExisted=isMovieExisted,
                            screens=screens,seatList = seats )
+@app.route("/manageMovies")
+def manageMovies():
+    if session["role"]=="admin":
+        return render_template("manageMovies.html", movieListDefault = movieListDefault ,screenList=screenList)
+    else:
+        return redirect(url_for("index"))
+
+@app.route("/addMovie", methods=["POST"])
+def addMovie():
+    title = request.form.get("title")
+    language = request.form.get("language")
+    genre = request.form.get("genre")
+    reDate = request.form.get("reDate")
+    newMovie = Movie(title,language,genre,reDate)
+    movieListDefault.append(newMovie)
+    return redirect(url_for("manageMovies"))

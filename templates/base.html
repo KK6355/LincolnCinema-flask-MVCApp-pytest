@@ -33,9 +33,10 @@
           </li>
           {% if session["role"] and session["role"]=='admin' %}
           <li class="nav-item">
-            <a class="nav-link" href="#">Manage Movies</a>
+            <a class="nav-link" href="{{url_for('manageMovies')}}">Manage Movies</a>
           </li>
           {%endif%}
+          {% if not session["username"] %}
           <li class="nav-item">
             <a class="nav-link" type="button"
             data-bs-toggle="modal"
@@ -44,6 +45,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Register</a>
           </li>
+          {%endif%}
           {% if session["username"] %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
