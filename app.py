@@ -1,8 +1,11 @@
-from flask import Flask,render_template, request
+from flask import Flask,render_template, request, session,flash,redirect,url_for
 from MovieListDefault import movieListDefault
 from ScreenListData import screenList
 from SeatListData import seatList
+from CustomerListData import customerList
+from AdminListData import adminList
 app = Flask(__name__)
+app.secret_key = "admin123"
 @app.route('/')
 def index():
     filteredList = movieListDefault
@@ -19,6 +22,26 @@ def index():
                 filteredList.append(movie)
      
     return render_template('index.html',movieListDefault = filteredList)
+@app.route("/login", methods=["POST"])
+def login_post():
+    email = request.form.get("email")
+    password = request.form.get("password")
+    userList = adminList + customerList
+    for user in userList:
+        if user.userName == email and user.password == password:
+            session["username"] = email
+            session["role"] = user.role
+            
+        else:
+            flash("Invalid user name or password!")
+
+    return redirect(url_for("index")) 
+# public interface logout function
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    session.pop("role", None)
+    return redirect(url_for("index"))
 @app.route('/movieDetail/<int:movieId>')
 def movieDetail(movieId):
     isMovieExisted = False
