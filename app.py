@@ -5,8 +5,20 @@ from SeatListData import seatList
 app = Flask(__name__)
 @app.route('/')
 def index():
-    
-    return render_template('index.html',movieListDefault = movieListDefault)
+    filteredList = movieListDefault
+    searchStr = request.args.get('searchStr')
+    if searchStr:
+        searchStrLower = request.args.get('searchStr').lower()
+        filteredList = []
+        for movie in movieListDefault:
+            index1 = movie.title.lower().find(searchStrLower)
+            index2 = movie.genre.lower().find(searchStrLower)
+            index3 = movie.language.lower().find(searchStrLower)
+            index4 = movie.reDate.lower().find(searchStrLower)
+            if index1 != -1 or index2 != -1 or index3 != -1 or index4 != -1:
+                filteredList.append(movie)
+     
+    return render_template('index.html',movieListDefault = filteredList)
 @app.route('/movieDetail/<int:movieId>')
 def movieDetail(movieId):
     isMovieExisted = False
@@ -18,6 +30,7 @@ def movieDetail(movieId):
     movieLang = ""
     movieRDate = ""
     movieGenre = ""
+    
     for movie in movieListDefault:
         if movie.movieId == movieId:
             isMovieExisted = True
