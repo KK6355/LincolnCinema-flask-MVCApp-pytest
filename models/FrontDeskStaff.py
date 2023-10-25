@@ -6,14 +6,14 @@ class FrontDeskStaff(User):
     nextID = 2000
     def __init__(self, userName, password):
         super().__init__(userName,password)       
-        self.__staffId = FrontDeskStaff.nextID
+        self.__userId = FrontDeskStaff.nextID
         self.__loginStatus = False
         self.__role = "staff"
         FrontDeskStaff.nextID += 1
         
     @property
-    def staffId(self):
-        return self.__staffId
+    def userId(self):
+        return self.__userId
     @property
     def role(self):
         return self.__role

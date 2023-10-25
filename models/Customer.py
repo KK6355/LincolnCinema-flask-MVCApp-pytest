@@ -6,7 +6,7 @@ class Customer(User):
     nextID = 3000
     def __init__(self, userName, password):
         super().__init__(userName,password)       
-        self.__customerId = Customer.nextID
+        self.__userId = Customer.nextID
         self.__loginStatus = False
         self.__role = "customer"
         Customer.nextID += 1
@@ -14,8 +14,8 @@ class Customer(User):
         self.notificationList = []
         self.couponList = []
     @property
-    def customerId(self):
-        return self.__customerId
+    def userId(self):
+        return self.__userId
     @property
     def role(self):
         return self.__role
@@ -28,6 +28,6 @@ class Customer(User):
 
 
     def customerInfo(self):
-        print(str(self.customerId) + " " + self.userName + " " )
+        print(str(self.userId) + " " + self.userName + " " )
     
 

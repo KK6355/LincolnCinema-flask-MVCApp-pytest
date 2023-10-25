@@ -6,14 +6,14 @@ class Admin(User):
     nextID = 1000
     def __init__(self, userName, password):
         super().__init__(userName,password)       
-        self.__adminId = Admin.nextID
+        self.__userId = Admin.nextID
         self.__loginStatus = False
         self.__role = "admin"
         Admin.nextID += 1
         
     @property
-    def adminId(self):
-        return self.__adminId
+    def userId(self):
+        return self.__userId
     @property
     def role(self):
         return self.__role
@@ -26,4 +26,4 @@ class Admin(User):
 
 
     def adminInfo(self):
-        print(str(self.adminId) + " " + self.userName + " " )
+        print(str(self.userId) + " " + self.userName + " " )

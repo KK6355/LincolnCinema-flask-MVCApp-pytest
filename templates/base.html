@@ -170,6 +170,14 @@
     }, false)
   })
 })()
+  function callFunction(){
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    var checkedOne = Array.prototype.slice.call(checkboxes).some(x=>x.checked);
+    document.getElementById("bookBtn").disabled = true;
+  if (checkedOne) {
+    document.getElementById("bookBtn").disabled = false;
+  }
+  }
   </script>
 </body>
 </html>

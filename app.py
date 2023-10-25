@@ -35,6 +35,7 @@ def login_post():
         if user.userName == email and user.password == password:
             session["username"] = email
             session["role"] = user.role
+            session["userId"] = user.userId
             
         else:
             flash("Invalid user name or password!")
@@ -45,6 +46,7 @@ def login_post():
 def logout():
     session.pop("username", None)
     session.pop("role", None)
+    session.pop("userId", None)
     return redirect(url_for("index"))
 @app.route('/movieDetail/<int:movieId>')
 def movieDetail(movieId):
