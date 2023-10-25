@@ -6,6 +6,8 @@ from CustomerListData import customerList
 from AdminListData import adminList
 from StaffListData import staffList
 from models.Movie import Movie
+from models.Screen import Screen
+from HallListData import hallList
 app = Flask(__name__)
 app.secret_key = "admin123"
 @app.route('/')
@@ -82,7 +84,7 @@ def movieDetail(movieId):
 @app.route("/manageMovies")
 def manageMovies():
     if session["role"]=="admin":
-        return render_template("manageMovies.html", movieListDefault = movieListDefault ,screenList=screenList)
+        return render_template("manageMovies.html", movieListDefault = movieListDefault ,screenList=screenList,hallList=hallList)
     else:
         return redirect(url_for("index"))
 
@@ -94,4 +96,15 @@ def addMovie():
     reDate = request.form.get("reDate")
     newMovie = Movie(title,language,genre,reDate)
     movieListDefault.append(newMovie)
+    return redirect(url_for("manageMovies"))
+@app.route("/addScreen", methods=["POST"])
+def addScreen():
+    movieIdStr = request.form.get("movieId")
+    movieId = int(movieIdStr)
+    hallId = request.form.get("hallId")
+    scheduledDate = request.form.get("scheduledDate")
+    scheduledTime = request.form.get("scheduledTime")
+    newScreen = Screen( movieId, hallId, scheduledDate, scheduledTime)
+    screenList.append(newScreen)
+    print(len(screenList))
     return redirect(url_for("manageMovies"))

@@ -6,7 +6,7 @@
         <div class="col-8"><h3>Manage Movies & Screens</h3></div>
         <div class="col-4" style="text-align: end;"><a type="button"
             data-bs-toggle="modal"
-            data-bs-target="#movieModal"><span style="color: rgb(63, 156, 77);font-size: 20px;padding: 10px;"><i class="fas fa-plus-circle"></i></span> Add Movie</a></div>
+            data-bs-target="#movieModal"><span style="color: rgb(63, 156, 77);font-size: 30px;padding: 10px;"><i class="fas fa-plus-circle"></i></span><span style="font-size: 30px;">Add Movie </span></a></div>
     </div>
      <!--add movie modal -->
      <div
@@ -106,7 +106,12 @@
             <img src="{{movie.poster}}" alt="{{movie.title}}" style="width: 200px;height: 300px;">
         </div>
         <div class="col-8">
-            <div class="row"><h6>{{movie.title}}</h6></div>
+            <div class="row">
+                <div class="col-8"><h6>{{movie.title}}</h6></div>
+                <div class="col-4" style="text-align: end;"><a type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#screenModal{{movie.movieId}}"><span style="color: rgb(69, 212, 237);font-size: 20px;padding: 10px;"><i class="fas fa-plus-circle"></i></span> Add Screen</a></div>
+            </div>
             {% for screen in screenList%}
                 {%if movie.movieId == screen.movieId%}
                     <div class="row">
@@ -118,6 +123,84 @@
                 {%endif%}
             {%endfor%}
         </div>
+        <!--add screen modal -->
+     <div
+     class="modal fade"
+     id="screenModal{{movie.movieId}}"
+     tabindex="-1"
+     aria-labelledby="loginModalLabel"
+     aria-hidden="true"
+   >
+     <div class="modal-dialog modal-dialog-centered" style="color: black;">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h1 class="modal-title fs-5" id="loginModalLabel">
+             Add Screen
+           </h1>
+           <button
+             type="button"
+             class="btn-close"
+             data-bs-dismiss="modal"
+             aria-label="Close"
+           ></button>
+         </div>
+         <div class="modal-body">
+           <form
+             action="/addScreen"
+             method="post"
+             class="needs-validation"
+             novalidate
+           >
+             <input type="hidden" name="movieId" value="{{movie.movieId}}" />
+             <div class="mb-3">
+                <select class="form-select" aria-label="Default select example" name="hallId" required>
+                    {% for hall in hallList%}
+                    <option value="{{hall.hallId}}">{{hall.name}}</option>
+                    {%endfor%}
+                  </select>
+               <div class="invalid-feedback">
+                 Hall can not be empty
+               </div>
+             </div>
+              <div class="mb-3">
+                <label for="scheduledDate" class="col-form-label">Scheduled Date:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="scheduledDate"
+                  required
+                />
+                <div class="invalid-feedback">
+                    please select valid date
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="scheduledTime" class="col-form-label">Scheduled Time:</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  name="scheduledTime"
+                  required
+                />
+                <div class="invalid-feedback">
+                    please select valid time
+                </div>
+              </div>
+             <div class="mb-3">
+               <button
+                 type="submit"
+                 class="btn btn-primary mb-3"
+                 style="margin-left: 40%"
+               >
+                 Add Screen
+               </button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+   <!-- add screen modal -->
     </div>
     <br>
     {%endfor%}
