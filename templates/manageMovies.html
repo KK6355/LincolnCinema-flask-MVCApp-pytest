@@ -108,16 +108,28 @@
         <div class="col-8">
             <div class="row">
                 <div class="col-8"><h6>{{movie.title}}</h6></div>
-                <div class="col-4" style="text-align: end;"><a type="button"
+                <div class="col-4" style="text-align: end;">
+                    <a type="button"
                     data-bs-toggle="modal"
-                    data-bs-target="#screenModal{{movie.movieId}}"><span style="color: rgb(69, 212, 237);font-size: 20px;padding: 10px;"><i class="fas fa-plus-circle"></i></span> Add Screen</a></div>
+                    data-bs-target="#screenModal{{movie.movieId}}"><span style="color: rgb(69, 212, 237);font-size: 20px;padding: 10px;"><i class="fas fa-plus-circle"></i></span> Add Screen
+                    </a>
+                    <a type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cancelMovieModal{{movie.movieId}}"><span style="color: rgb(228, 56, 25);font-size: 20px;padding: 10px;"><i class="fas fa-exclamation-circle"></i></span> Cancel Movie
+                    </a>
+                </div>
+                
             </div>
             {% for screen in screenList%}
                 {%if movie.movieId == screen.movieId%}
                     <div class="row">
                         <div class="col d-flex">
                             <button class="btn btn-info" disabled>{{screen.scheduledDate}}  {{screen.scheduledTime}}</button>
-                        </div>                        
+                            <a type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmation"><span style="color: rgb(228, 56, 25);font-size: 20px;padding: 10px;"><i class="fas fa-minus-circle"></i></span></a>
+                        </div> 
+                                               
                     </div>
                     <br>
                 {%endif%}
