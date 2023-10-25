@@ -36,6 +36,11 @@
             <a class="nav-link" href="{{url_for('manageMovies')}}">Manage Movies</a>
           </li>
           {%endif%}
+          {% if session["role"] and session["role"]=='customer' %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">My Tickets</a>
+          </li>
+          {%endif%}
           {% if not session["username"] %}
           <li class="nav-item">
             <a class="nav-link" type="button"
@@ -52,6 +57,10 @@
               Hi,{{session["username"]}}
             </a>
             <ul class="dropdown-menu">
+              
+              {% if session["role"] and session["role"]=='customer' %}
+              <li><a class="dropdown-item" href="#">My Coupon</a></li>
+              {%endif%}
               <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>             
             </ul>
           </li>
