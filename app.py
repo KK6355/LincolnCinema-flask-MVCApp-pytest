@@ -110,3 +110,9 @@ def addScreen():
     screenList.append(newScreen)
     print(len(screenList))
     return redirect(url_for("manageMovies"))
+
+@app.route("/bookTicket", methods=["POST"])
+def bookTicket():
+    seat = request.form.get("seat")
+    print(seat)
+    return redirect(url_for("index"))

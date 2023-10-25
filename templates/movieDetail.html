@@ -25,6 +25,7 @@
             <h6>Dates & Times</h6>
         </div>
     </div>
+    <form action="/bookTicket" method="post">
     <div class="row">
         {% for screen in screens%}
         <div class="col-3">
@@ -40,28 +41,30 @@
         </div>
         <div class="collapse" id="seat{{screen.screenId}}">
             <p style="color: white;">HallNum: {{screen.hallId}}</p>
-            <form method="get">
+          
             {% for seat in seatList%}
                 {% if seat.hallId == screen.hallId%} 
                 <!-- check if seat is token by booking in this screen -->                  
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox"  value="{{seat.seatId}}" onchange="callFunction()">
+                    <input class="form-check-input" type="checkbox" name="seat"  value="{{seat.seatId}}" onchange="callFunction()">
                     <label class="form-check-label" for="inlineCheckbox1" >{{seat.seatRow}}{{seat.seatNum}}</label>
                   </div>              
                 {%endif%}
             {%endfor%}
-            <br>
-            <div class="row">
-                <div class="col">
-                    <button type="submit" class="btn btn-info" disabled id="bookBtn">Book</button>
-                </div>
-            </div>
-           
-            </form>
+            
+            
         </div>
                
         {%endfor%}
+        
     </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <button type="submit" class="btn btn-info" disabled id="bookBtn">Book</button>
+        </div>
+    </div>
+    </form>
 </div>
 
 </div>
