@@ -8,6 +8,7 @@ from StaffListData import staffList
 from models.Movie import Movie
 from models.Screen import Screen
 from HallListData import hallList
+from models.Booking import Booking
 app = Flask(__name__)
 app.secret_key = "admin123"
 @app.route('/')
@@ -113,6 +114,17 @@ def addScreen():
 
 @app.route("/bookTicket", methods=["POST"])
 def bookTicket():
-    seat = request.form.get("seat")
-    print(seat)
+    # get selected seat from checked box
+    screenId = request.form.get("screenId")
+    customerId = session["userId"]
+    payment = request.form.get("price")
+    bookedSeat = []
+    for seat in seatList:
+        if request.form.get(f"seat{seat.seatId}"):
+            bookedSeat.append(seat.seatId)
+    #print(bookedSeat)       
+    newBooking = Booking(screenId,customerId, payment)
+    for customer in customerList:
+        if customer.userId == int(customerId):
+            customer.bookingList.append(newBooking)
     return redirect(url_for("index"))

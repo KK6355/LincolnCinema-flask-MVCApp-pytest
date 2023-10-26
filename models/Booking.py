@@ -1,4 +1,4 @@
-from Seat import Seat
+
 from datetime import datetime
 class Booking:
     """! The Ticket class
@@ -43,17 +43,17 @@ class Booking:
     #     return self.__price * (1-discount)
     def bookingInfo(self):
         print(f"Ticket Number:{self.refNum}, ticket price:{self.price}, ticket status:{self.payStatus}")
-    def takeSeat(self, seat:Seat) -> None:
-        """! The method check if the seat is available, if so take the seat for the ticket and make seat unavailable for others
-         Otherwise, throw an error when book a ticket .
-        @param seat object
-        @return None
-        """
-        pass
-    #combine screenId and seatId to determin if the seat is available
-    def offSeat(self, seat:Seat) -> None:
-        """! Make the seat available for others.
-        @param seat object
-        @return None
-        """
-        pass
+    # def takeSeat(self, seat:Seat) -> None:
+    #     """! The method check if the seat is available, if so take the seat for the ticket and make seat unavailable for others
+    #      Otherwise, throw an error when book a ticket .
+    #     @param seat object
+    #     @return None
+    #     """
+    #     pass
+    # #combine screenId and seatId to determin if the seat is available
+    # def offSeat(self, seat:Seat) -> None:
+    #     """! Make the seat available for others.
+    #     @param seat object
+    #     @return None
+    #     """
+    #     pass
