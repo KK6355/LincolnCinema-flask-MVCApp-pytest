@@ -9,6 +9,7 @@ from models.Movie import Movie
 from models.Screen import Screen
 from HallListData import hallList
 from models.Booking import Booking
+from models.Customer import Customer
 app = Flask(__name__)
 app.secret_key = "admin123"
 @app.route('/')
@@ -126,5 +127,22 @@ def bookTicket():
     for customer in customerList:
         if customer.userId == int(customerId):
             customer.bookingList.append(newBooking)
-    print(newBooking.seatList,newBooking.createdOn)
-    return redirect(url_for("index"))
+    print(newBooking.refNum,newBooking.seatList,newBooking.createdOn)
+    return redirect(url_for("myTickets"))
+@app.route("/myTickets")
+def myTickets():
+    if session["role"]=="customer":
+        bookingList = []
+
+        for customer in customerList:
+            if customer.userId == session["userId"]:
+                bookingList = customer.bookingList
+                for booking in bookingList:
+                    booking.payment = 0
+                    for seatId in booking.seatList:
+                        for seat in seatList:
+                            if seat.seatId == seatId:
+                                booking.payment += seat.price
+        return render_template("myTickets.html", bookingList=bookingList,screenList=screenList,movieList=movieListDefault, seatList=seatList,hallList=hallList)
+    else:
+        return redirect(url_for("index"))

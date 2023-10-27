@@ -30,5 +30,6 @@ class Screen:
     def scheduledTime(self):
         return self.__scheduledTime 
     
-    def screenInfo(self):
-        print(f"screen Id: {self.screenId}, screen movie id: {self.movieId}, screen hall id: {self.hallId}, scheduled time: {self.scheduledTime}")
+    # def screenInfo(self):
+    #     print(f"screen Id: {self.screenId}, screen movie id: {self.movieId}, screen hall id: {self.hallId}, scheduled time: {self.scheduledTime}")
+    

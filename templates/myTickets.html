@@ -1,0 +1,77 @@
+{% extends "base.html" %} 
+{% block content %}
+<div style="background-color: rgb(49, 48, 48);color: white;">
+    <div style="padding: 10% 20%;"> 
+        <div class="row">
+            <div class="col">
+                <h3>My Tickets</h3>
+            </div>
+        </div>
+        <br>
+        {% for booking in bookingList%}
+        <div class="row">
+            {% for screen in screenList %}
+                {% if screen.screenId ==  booking.screenId%}
+                    {%for movie in movieList%}
+                        {%if movie.movieId == screen.movieId%}
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col"> <h6>{{movie.title}}</h6></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="btn btn-info" disabled>{{screen.scheduledDate}}</button>
+                                        <button class="btn btn-success" disabled>{{screen.scheduledTime}}</button>
+                                    </div>
+                                </div>  
+                            </div>
+                            
+                            {% for hall in hallList%}
+                                {% if hall.hallId == screen.hallId%}
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col"><p>{{hall.name}}</p></div>
+                                        </div>
+                                        <div class="row">
+                                            {% for seatId in booking.seatList%}
+                                                {% for seat in seatList%}
+                                                    {%if seat.seatId == seatId and seat.hallId == hall.hallId%}
+                                                        <div class="col-2">{{seat.seatRow}}{{seat.seatNum}}<span><i class="fas fa-couch"></i></span></div>
+                                                    {%endif%}
+                                                {%endfor%}
+                                            {%endfor%}                        
+                                        </div>
+                                    </div>
+                                {%endif%}
+                            
+                            {%endfor%}
+                        {%endif%}
+                    {%endfor%}
+                {%endif%}                
+            {%endfor%}
+            <div class="col-2">
+                <div class="row">
+                    <div class="col">Payment</div>
+                </div>
+                <div class="row">
+                    <div class="col">$ {{booking.payment}}</div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary">Pay</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-danger">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

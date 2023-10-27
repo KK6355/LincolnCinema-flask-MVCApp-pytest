@@ -9,7 +9,7 @@ class Booking:
         self.__refNum = Booking.nextRefNum
         self.__seatList = []
         self.__screenId = screenId
-        #self.__payment = 0
+        self.__payment = 0
         self.__payStatus = "unpaid"
         self.__customerId = customerId
         self.__createdOn = datetime.now()
@@ -36,10 +36,12 @@ class Booking:
     @property
     def createdOn(self):
         return self.__createdOn   
-    # @property
-    # def payment(self):
-    #     return self.__payment
-   
+    @property
+    def payment(self):
+        return self.__payment
+    @payment.setter
+    def payment(self,payment):
+        self.__payment = payment
     # def getPrice(self, discount):
     #     return self.__price * (1-discount)
     def bookingInfo(self):

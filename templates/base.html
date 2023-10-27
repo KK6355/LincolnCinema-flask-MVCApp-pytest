@@ -38,7 +38,7 @@
           {%endif%}
           {% if session["role"] and session["role"]=='customer' %}
           <li class="nav-item">
-            <a class="nav-link" href="#">My Tickets</a>
+            <a class="nav-link" href="{{url_for('myTickets')}}">My Tickets</a>
           </li>
           {%endif%}
           {% if not session["username"] %}
