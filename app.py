@@ -114,17 +114,17 @@ def addScreen():
 
 @app.route("/bookTicket", methods=["POST"])
 def bookTicket():
-    # get selected seat from checked box
+    
     screenId = request.form.get("screenId")
     customerId = session["userId"]
-    payment = request.form.get("price")
-    bookedSeat = []
+    newBooking = Booking(int(screenId),customerId)
+    # get selected seat from checked box
     for seat in seatList:
         if request.form.get(f"seat{seat.seatId}"):
-            bookedSeat.append(seat.seatId)
-    #print(bookedSeat)       
-    newBooking = Booking(screenId,customerId, payment)
+            newBooking.seatList.append(seat.seatId)
+    # add into customer booking list      
     for customer in customerList:
         if customer.userId == int(customerId):
             customer.bookingList.append(newBooking)
+    print(newBooking.seatList,newBooking.createdOn)
     return redirect(url_for("index"))

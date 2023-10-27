@@ -5,11 +5,11 @@ class Booking:
     Defines class for movie tickets
     """
     nextRefNum = 8000
-    def __init__(self, screenId,customerId, payment):
+    def __init__(self, screenId,customerId):
         self.__refNum = Booking.nextRefNum
         self.__seatList = []
         self.__screenId = screenId
-        self.__payment = payment
+        #self.__payment = 0
         self.__payStatus = "unpaid"
         self.__customerId = customerId
         self.__createdOn = datetime.now()
@@ -36,9 +36,10 @@ class Booking:
     @property
     def createdOn(self):
         return self.__createdOn   
-    @property
-    def payment(self):
-        return self.__payment
+    # @property
+    # def payment(self):
+    #     return self.__payment
+   
     # def getPrice(self, discount):
     #     return self.__price * (1-discount)
     def bookingInfo(self):
