@@ -58,14 +58,22 @@
                 </div>
             </div>
             <div class="col-3">
+                {% if booking.payStatus == "unpaid"%}
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-primary">Pay</button>
+                        <form action="/payTicket" method="post">
+                            <input type="hidden" name="bookingId" value="{{booking.refNum}}" />
+                            <button class="btn btn-primary">Pay</button>
+                        </form>
                     </div>
                 </div>
+                {%endif%}
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-danger">Cancel</button>
+                        <form action="/cancelTicket" method="post">
+                            <input type="hidden" name="bookingId" value="{{booking.refNum}}" />
+                            <button class="btn btn-danger">Cancel</button>
+                        </form>                    
                     </div>
                 </div>
             </div>

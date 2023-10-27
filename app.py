@@ -146,3 +146,24 @@ def myTickets():
         return render_template("myTickets.html", bookingList=bookingList,screenList=screenList,movieList=movieListDefault, seatList=seatList,hallList=hallList)
     else:
         return redirect(url_for("index"))
+
+@app.route("/payTicket",methods=['POST'])
+def payTicket():
+    return
+@app.route("/cancelTicket",methods=['POST'])
+def cancelTicket():
+    bookingIdStr = request.form.get("bookingId")
+    bookingRefNum = int(bookingIdStr)
+    for customer in customerList:
+            if customer.userId == session["userId"]:
+                bookingList = customer.bookingList
+                for booking in bookingList:
+                    if booking.refNum ==  bookingRefNum:
+                        if booking.payStatus == 'unpaid':
+                            customer.bookingList.remove(booking)
+                        else:
+                            pass
+                            # refund
+                            # release seats
+                            # remove from list
+    return redirect(url_for("myTickets"))
