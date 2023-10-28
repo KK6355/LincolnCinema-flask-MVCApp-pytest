@@ -18,6 +18,7 @@
                                 <div class="row">
                                     <div class="col"> <h6>{{movie.title}}</h6></div>
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col">
                                         <button class="btn btn-info" disabled>{{screen.scheduledDate}}</button>
@@ -53,6 +54,7 @@
                 <div class="row">
                     <div class="col">Payment</div>
                 </div>
+                <br>
                 <div class="row">
                     <div class="col">$ {{booking.payment}}</div>
                 </div>
@@ -60,14 +62,155 @@
             <div class="col-3">
                 {% if booking.payStatus == "unpaid"%}
                 <div class="row">
-                    <div class="col">
-                        <form action="/payTicket" method="post">
-                            <input type="hidden" name="bookingId" value="{{booking.refNum}}" />
-                            <button class="btn btn-primary">Pay</button>
-                        </form>
+                    <div class="col">                       
+                        <a class="btn btn-primary" type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#pay{{booking.refNum}}">Pay
+                        </a>
                     </div>
+<!--pay Modal -->
+   <div
+   class="modal fade"
+   id="pay{{booking.refNum}}"
+   tabindex="-1"
+   aria-labelledby="loginModalLabel"
+   aria-hidden="true"
+ >
+   <div class="modal-dialog modal-dialog-centered"  style="color: black;">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h1 class="modal-title fs-5" id="loginModalLabel">
+           Pay Tickets
+         </h1>
+         <button
+           type="button"
+           class="btn-close"
+           data-bs-dismiss="modal"
+           aria-label="Close"
+         ></button>
+       </div>
+       <div class="modal-body">
+         <form
+           action="/payTicket"
+           method="post"
+           class="needs-validation"
+           novalidate
+         >
+         <input type="hidden" name="bookingId" value="{{booking.refNum}}" />
+         
+           <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="paymethod" id="creditradio" value="creditCard" checked onclick="document.getElementById('cardNum').disabled=false;document.getElementById('holderName').disabled=false;
+                document.getElementById('type').disabled=false;document.getElementById('expiration').disabled=false;">
+                <label class="form-check-label" for="creditCard">
+                  Credit Card
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="paymethod" id="debitradio" value="debitCard" onclick="document.getElementById('cardNum').disabled=false;document.getElementById('holderName').disabled=false;
+                document.getElementById('type').disabled=false;document.getElementById('expiration').disabled=true;">
+                <label class="form-check-label" for="debitCard">
+                  Debit Card
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="paymethod" id="cashradio" value="cash" onclick="document.getElementById('cardNum').disabled=true;document.getElementById('holderName').disabled=true;
+                document.getElementById('type').disabled=true;document.getElementById('expiration').disabled=true;">
+                <label class="form-check-label" for="cash">
+                  Cash
+                </label>
+              </div>
+             <!-- <div class="invalid-feedback">
+               please input a valid email address with "@"
+             </div> -->
+           </div>
+           <div style="display: block;">
+           <div class="mb-3">
+            <label for="cardNum" class="col-form-label">Card Number:</label>
+            <input
+              type="number"
+              class="form-control"
+              name="cardNum"
+              id = "cardNum"
+              required
+              
+            />
+            <div class="invalid-feedback">
+                please type valid card number
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="holderName" class="col-form-label">Card Holder:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="holderName"
+              id = "holderName"
+              required             
+            />
+            <div class="invalid-feedback">
+                please type valid name
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="" class="col-form-label">Card type:</label>
+            <select class="form-select" aria-label="Default select example" name="type" id="type" required >               
+                <option value="visa" selected>Visa</option>
+                <option value="master">Master</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label for="holderName" class="col-form-label">Expiration:</label>
+            <input
+              type="date"
+              class="form-control"
+              name="expiration"
+              id="expiration"
+              required
+              
+            />
+            <div class="invalid-feedback">
+                please type valid date
+            </div>
+          </div>
+        </div>
+           <div class="mb-3">
+            <label class="form-check-label" for="couponId">
+                Select Valid Coupon
+            </label>
+            <select class="form-select" aria-label="Default select example" name="couponId" onclick="document.getElementById('payment').innerHTML='{{booking.payment}}'*(1-this.value);" >
+                <option value="" selected>select...</option>
+                {% for coupon in coupons%}
+                <option value="{{coupon.discount}}">{{coupon}}</option>
+                {%endfor%}
+            </select>
+           
+         </div>
+           <div class="mb-3">
+            <h6>
+              Total Payment: $ <b  id="payment"></b>
+            <h6>
+          </div>
+           <div class="mb-3">
+             <button
+               type="submit"
+               class="btn btn-primary mb-3"
+               style="margin-left: 40%"
+             >
+               Confirm
+             </button>
+           </div>
+       
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!-- pay modal -->
                 </div>
                 {%endif%}
+                <br>
                 <div class="row">
                     <div class="col">
                         <form action="/cancelTicket" method="post">

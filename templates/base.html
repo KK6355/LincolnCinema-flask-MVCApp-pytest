@@ -58,9 +58,9 @@
             </a>
             <ul class="dropdown-menu">
               
-              {% if session["role"] and session["role"]=='customer' %}
+              <!-- {% if session["role"] and session["role"]=='customer' %}
               <li><a class="dropdown-item" href="#">My Coupon</a></li>
-              {%endif%}
+              {%endif%} -->
               <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>             
             </ul>
           </li>

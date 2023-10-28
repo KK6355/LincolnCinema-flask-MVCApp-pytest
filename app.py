@@ -10,6 +10,7 @@ from models.Screen import Screen
 from HallListData import hallList
 from models.Booking import Booking
 from models.Customer import Customer
+from CouponListData import couponList
 app = Flask(__name__)
 app.secret_key = "admin123"
 @app.route('/')
@@ -146,7 +147,11 @@ def bookTicket():
 def myTickets():
     if session["role"]=="customer":
         bookingList = []
-
+        coupons = []
+       
+        for coupon in couponList:
+            if coupon.customerId == session["userId"]:
+                coupons.append(coupon)
         for customer in customerList:
             if customer.userId == session["userId"]:
                 bookingList = customer.bookingList
@@ -156,13 +161,15 @@ def myTickets():
                         for seat in seatList:
                             if seat.seatId == seatId:
                                 booking.payment += seat.price
-        return render_template("myTickets.html", bookingList=bookingList,screenList=screenList,movieList=movieListDefault, seatList=seatList,hallList=hallList)
+        return render_template("myTickets.html", bookingList=bookingList,screenList=screenList,movieList=movieListDefault, seatList=seatList,hallList=hallList,coupons=coupons)
     else:
         return redirect(url_for("index"))
 
 @app.route("/payTicket",methods=['POST'])
 def payTicket():
-    return
+    paymethod = request.form.get("paymethod")
+    print(paymethod)
+    return redirect(url_for("index"))
 @app.route("/cancelTicket",methods=['POST'])
 def cancelTicket():
     bookingIdStr = request.form.get("bookingId")
