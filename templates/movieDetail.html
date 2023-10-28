@@ -40,20 +40,22 @@
         </div>
         <div class="collapse" id="seat{{screen.screenId}}">
             <p style="color: white;">HallNum: {{screen.hallId}}</p>
-            <input type="hidden" name="screenId" value="{{screen.screenId}}"/>
+            
             {% for seat in seatList%}
                 {% if seat.hallId == screen.hallId%} 
                 <!-- check if seat is token by booking in this screen -->                  
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="seat{{seat.seatId}}"  value="{{seat.seatId}}" onchange="callFunction()">
-                    <label class="form-check-label" for="inlineCheckbox1" >{{seat.seatRow}}{{seat.seatNum}}</label>
+                    <input class="form-check-input" type="checkbox" name="seat{{seat.seatId}}{{screen.screenId}}"  value="{{seat.seatId}}{{screen.screenId}}" onchange="callFunction()">
+                    <label class="form-check-label" for="inlineCheckbox1" >{{seat.seatRow}}{{seat.seatNum}}</label>           
                   </div>             
                 {%endif%}
+               
             {%endfor%}
             
+            <!-- <input type="hidden" name="screen{{screen.screenId}}" value="{{screen.screenId}}"/> -->
             
         </div>
-               
+      
         {%endfor%}
         
     </div>
@@ -62,7 +64,7 @@
         <div class="col">
             <button type="submit" class="btn btn-info" disabled id="bookBtn">Book</button>
         </div>
-    </div>
+    </div> 
     </form>
 </div>
 
