@@ -11,6 +11,9 @@ from HallListData import hallList
 from models.Booking import Booking
 from models.Customer import Customer
 from CouponListData import couponList
+from models.CreditCard import CreditCard
+from models.DebitCard import DebitCard
+from models.Notification import Notification
 app = Flask(__name__)
 app.secret_key = "admin123"
 @app.route('/')
@@ -167,9 +170,50 @@ def myTickets():
 
 @app.route("/payTicket",methods=['POST'])
 def payTicket():
+    #create new instances
     paymethod = request.form.get("paymethod")
-    print(paymethod)
-    return redirect(url_for("index"))
+    paymentStr = request.form.get("payment")
+    payment = float(paymentStr)
+    couponId = request.form.get("couponId")
+    if couponId:
+        for coupon in couponList:
+            if coupon.couponId == int(couponId):
+                coupon.status = "used"
+                payment = payment * (1-coupon.discount)
+    if paymethod == "creditCard":
+        cardNum = request.form.get("cardNum")
+        holderName = request.form.get("holderName")
+        type = request.form.get("type")
+        expiration = request.form.get("expiration")
+        newCreditCard = CreditCard(cardNum, holderName,type,expiration)
+        print(newCreditCard)
+    if paymethod == "debitCard":
+        cardNum = request.form.get("cardNum")
+        holderName = request.form.get("holderName")
+        type = request.form.get("type")
+        newDebitCard = DebitCard(cardNum, holderName,type)
+        print(newDebitCard)
+    newNotification = Notification("payTicket",f"You have paid ${payment}.Your tickets have been booked successfully! ")
+    #change booking status and payment
+    
+    bookingIdStr = request.form.get("bookingId")
+    bookingRefNum = int(bookingIdStr)
+    for customer in customerList:
+            if customer.userId == session["userId"]:
+                bookingList = customer.bookingList
+                for booking in bookingList:
+                    if booking.refNum ==  bookingRefNum:
+                        booking.payStatus = "paid"
+                        booking.payment = payment
+    #change seats status
+                        for screen in screenList:
+                            if screen.screenId == booking.screenId:
+                                for seatId in booking.seatList:
+                                    screen.unavailableSeats.append(seatId)
+
+    
+    
+    return redirect(url_for("myTickets"))
 @app.route("/cancelTicket",methods=['POST'])
 def cancelTicket():
     bookingIdStr = request.form.get("bookingId")

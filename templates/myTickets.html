@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 {% block content %}
 <div style="background-color: rgb(49, 48, 48);color: white;">
-    <div style="padding: 10% 20%;"> 
+    <div style="padding: 10% 20%; height: 80vh;"> 
         <div class="row">
             <div class="col">
                 <h3>My Tickets</h3>
@@ -97,25 +97,25 @@
            novalidate
          >
          <input type="hidden" name="bookingId" value="{{booking.refNum}}" />
-         
+         <input type="hidden" name="payment" value="{{booking.payment}}" />
            <div class="mb-3">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="paymethod" id="creditradio" value="creditCard" checked onclick="document.getElementById('cardNum').disabled=false;document.getElementById('holderName').disabled=false;
-                document.getElementById('type').disabled=false;document.getElementById('expiration').disabled=false;">
+                <input class="form-check-input" type="radio" name="paymethod" id="creditradio" value="creditCard" checked onclick="document.getElementById('cardNum{{booking.refNum}}').disabled=false;document.getElementById('holderName{{booking.refNum}}').disabled=false;
+                document.getElementById('type{{booking.refNum}}').disabled=false;document.getElementById('expiration{{booking.refNum}}').disabled=false;">
                 <label class="form-check-label" for="creditCard">
                   Credit Card
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="paymethod" id="debitradio" value="debitCard" onclick="document.getElementById('cardNum').disabled=false;document.getElementById('holderName').disabled=false;
-                document.getElementById('type').disabled=false;document.getElementById('expiration').disabled=true;">
+                <input class="form-check-input" type="radio" name="paymethod" id="debitradio" value="debitCard" onclick="document.getElementById('cardNum{{booking.refNum}}').disabled=false;document.getElementById('holderName{{booking.refNum}}').disabled=false;
+                document.getElementById('type{{booking.refNum}}').disabled=false;document.getElementById('expiration{{booking.refNum}}').disabled=true;">
                 <label class="form-check-label" for="debitCard">
                   Debit Card
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="paymethod" id="cashradio" value="cash" onclick="document.getElementById('cardNum').disabled=true;document.getElementById('holderName').disabled=true;
-                document.getElementById('type').disabled=true;document.getElementById('expiration').disabled=true;">
+                <input class="form-check-input" type="radio" name="paymethod" id="cashradio" value="cash" onclick="document.getElementById('cardNum{{booking.refNum}}').disabled=true;document.getElementById('holderName{{booking.refNum}}').disabled=true;
+                document.getElementById('type{{booking.refNum}}').disabled=true;document.getElementById('expiration{{booking.refNum}}').disabled=true;">
                 <label class="form-check-label" for="cash">
                   Cash
                 </label>
@@ -131,7 +131,7 @@
               type="number"
               class="form-control"
               name="cardNum"
-              id = "cardNum"
+              id = "cardNum{{booking.refNum}}"
               required
               
             />
@@ -145,7 +145,7 @@
               type="text"
               class="form-control"
               name="holderName"
-              id = "holderName"
+              id = "holderName{{booking.refNum}}"
               required             
             />
             <div class="invalid-feedback">
@@ -153,20 +153,20 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="" class="col-form-label">Card type:</label>
-            <select class="form-select" aria-label="Default select example" name="type" id="type" required >               
+            <label for="type" class="col-form-label">Card type:</label>
+            <select class="form-select" aria-label="Default select example" name="type" id="type{{booking.refNum}}" required >               
                 <option value="visa" selected>Visa</option>
                 <option value="master">Master</option>
             </select>
           </div>
           
           <div class="mb-3">
-            <label for="holderName" class="col-form-label">Expiration:</label>
+            <label for="expiration" class="col-form-label">Expiration:</label>
             <input
               type="date"
               class="form-control"
               name="expiration"
-              id="expiration"
+              id="expiration{{booking.refNum}}"
               required
               
             />
@@ -179,28 +179,33 @@
             <label class="form-check-label" for="couponId">
                 Select Valid Coupon
             </label>
-            <select class="form-select" aria-label="Default select example" name="couponId" onclick="document.getElementById('payment').innerHTML='{{booking.payment}}'*(1-this.value);" >
+            <select class="form-select" aria-label="Default select example" name="couponId"  >
                 <option value="" selected>select...</option>
                 {% for coupon in coupons%}
-                <option value="{{coupon.discount}}">{{coupon}}</option>
+                  {% if coupon.status == "unused"%}
+                    <option value="{{coupon.couponId}}">{{coupon}}</option>
+                  {%endif%}
                 {%endfor%}
             </select>
            
          </div>
-           <div class="mb-3">
+           <!-- <div class="mb-3">
             <h6>
-              Total Payment: $ <b  id="payment"></b>
+              onclick="document.getElementById('payment{{booking.refNum}}').innerHTML='{{booking.payment}}'*(1-this.value);"
+              Total Payment: $ <b id="payment{{booking.refNum}}">{{booking.payment}}</b>
             <h6>
-          </div>
+          </div> -->
            <div class="mb-3">
              <button
                type="submit"
                class="btn btn-primary mb-3"
                style="margin-left: 40%"
+               
              >
                Confirm
              </button>
            </div>
+           
        
          </form>
        </div>
@@ -208,6 +213,7 @@
    </div>
  </div>
  <!-- pay modal -->
+ 
                 </div>
                 {%endif%}
                 <br>

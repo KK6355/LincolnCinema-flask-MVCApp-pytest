@@ -12,7 +12,7 @@ class Screen:
         Screen.nextId += 1
         # self.screenList = []
         # self.availableSeats = []
-        # self.unavailableSeats = []
+        self.__unavailableSeats = []
     
     @property
     def screenId(self):
@@ -29,7 +29,12 @@ class Screen:
     @property
     def scheduledTime(self):
         return self.__scheduledTime 
-    
+    @property
+    def unavailableSeats(self):
+        return self.__unavailableSeats
+    @unavailableSeats.setter
+    def unavailableSeats(self, unavailableSeats):
+        self.__unavailableSeats = unavailableSeats
     # def screenInfo(self):
     #     print(f"screen Id: {self.screenId}, screen movie id: {self.movieId}, screen hall id: {self.hallId}, scheduled time: {self.scheduledTime}")
     
