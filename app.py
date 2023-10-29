@@ -206,11 +206,13 @@ def payTicket():
                     
                 newNotification = Notification("payTicket",f"You have paid ${payment}.Your tickets have been booked successfully! ")
                 customer.notificationList.append(newNotification)
+                print(newNotification.content)
                 bookingList = customer.bookingList
                 for booking in bookingList:
                     if booking.refNum ==  bookingRefNum:
                         booking.payStatus = "paid"
                         booking.payment = payment
+                        booking.paymethod = paymethod
     #change seats status
                         for screen in screenList:
                             if screen.screenId == booking.screenId:
@@ -232,8 +234,19 @@ def cancelTicket():
                         if booking.payStatus == 'unpaid':
                             customer.bookingList.remove(booking)
                         else:
-                            pass
                             # refund
+                            if booking.paymethod != "cash":
+                                defaultCard = customer.cardList[0]
+                                defaultCard.balance = defaultCard.balance + booking.payment
                             # release seats
+                            for screen in screenList:
+                                if screen.screenId == booking.screenId:
+                                    for seatId in booking.seatList:
+                                        screen.unavailableSeats.remove(seatId)
                             # remove from list
+                            customer.bookingList.remove(booking)
+                            #create new notification
+                            newNotification = Notification("cancelTicket",f"${booking.payment} refund.Your tickets have been cancelled successfully! ")
+                            customer.notificationList.append(newNotification)
+                            print(newNotification.content)
     return redirect(url_for("myTickets"))

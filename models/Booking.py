@@ -13,6 +13,7 @@ class Booking:
         self.__payStatus = "unpaid"
         self.__customerId = customerId
         self.__createdOn = datetime.now()
+        self.__paymethod = "cash"
         Booking.nextRefNum += 1
     
     @property
@@ -42,6 +43,12 @@ class Booking:
     @payment.setter
     def payment(self,payment):
         self.__payment = payment
+    @property
+    def paymethod(self):
+        return self.__paymethod
+    @paymethod.setter
+    def paymethod(self,paymethod):
+        self.__paymethod = paymethod
     # def getPrice(self, discount):
     #     return self.__price * (1-discount)
     def bookingInfo(self):
