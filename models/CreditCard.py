@@ -5,6 +5,7 @@ class CreditCard:
         self.__holderName = holderName
         self.__type = type
         self.__expiration = expiration
+        self.__balance = 1000
     @property
     def cardNum(self):
         return self.__cardNum
@@ -20,3 +21,9 @@ class CreditCard:
     @property
     def expiration(self):
         return self.__expiration
+    @property
+    def balance(self):
+        return self.__balance
+    @balance.setter
+    def balance(self, balance):
+        self.__balance = balance

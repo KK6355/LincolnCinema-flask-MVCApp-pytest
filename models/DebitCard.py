@@ -4,6 +4,7 @@ class DebitCard:
         self.__cardNum = cardNum
         self.__holderName = holderName
         self.__type = type
+        self.__balance = 1000
     @property
     def paymethod(self):
         return self.__paymethod
@@ -16,4 +17,10 @@ class DebitCard:
     @property
     def type(self):
         return self.__type
+    @property
+    def balance(self):
+        return self.__balance
+    @balance.setter
+    def balance(self, balance):
+        self.__balance = balance
    

@@ -10,9 +10,10 @@ class Customer(User):
         self.__loginStatus = False
         self.__role = "customer"
         Customer.nextID += 1
-        self.bookingList = []
-        self.notificationList = []
-        self.couponList = []
+        self.__bookingList = []
+        self.__notificationList = []
+        self.__couponList = []
+        self.__cardList  = []
     @property
     def userId(self):
         return self.__userId
@@ -25,9 +26,31 @@ class Customer(User):
     @loginStatus.setter
     def loginStatus(self, loginStatus):
         self.__loginStatus = loginStatus
-
-
+    @property
+    def cardList(self):
+        return self.__cardList
+    @cardList.setter
+    def cardList(self, cardList):
+        self.__cardList = cardList
+    @property
+    def couponList(self):
+        return self.__couponList
+    @couponList.setter
+    def couponList(self, couponList):
+        self.__couponList= couponList
+    @property
+    def bookingList(self):
+        return self.__bookingList
+    @bookingList.setter
+    def bookingList(self, bookingList):
+        self.__bookingList = bookingList
+    @property
+    def notificationList(self):
+        return self.__notificationList
+    @notificationList.setter
+    def notificationList(self, notificationList):
+        self.__notificationList = notificationList
     def customerInfo(self):
-        print(str(self.userId) + " " + self.userName + " " )
+        return str(self.userId) + " " + self.userName + " " 
     
 

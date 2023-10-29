@@ -170,36 +170,42 @@ def myTickets():
 
 @app.route("/payTicket",methods=['POST'])
 def payTicket():
-    #create new instances
+    
     paymethod = request.form.get("paymethod")
     paymentStr = request.form.get("payment")
     payment = float(paymentStr)
     couponId = request.form.get("couponId")
-    if couponId:
-        for coupon in couponList:
-            if coupon.couponId == int(couponId):
-                coupon.status = "used"
-                payment = payment * (1-coupon.discount)
-    if paymethod == "creditCard":
-        cardNum = request.form.get("cardNum")
-        holderName = request.form.get("holderName")
-        type = request.form.get("type")
-        expiration = request.form.get("expiration")
-        newCreditCard = CreditCard(cardNum, holderName,type,expiration)
-        print(newCreditCard)
-    if paymethod == "debitCard":
-        cardNum = request.form.get("cardNum")
-        holderName = request.form.get("holderName")
-        type = request.form.get("type")
-        newDebitCard = DebitCard(cardNum, holderName,type)
-        print(newDebitCard)
-    newNotification = Notification("payTicket",f"You have paid ${payment}.Your tickets have been booked successfully! ")
+    
     #change booking status and payment
     
     bookingIdStr = request.form.get("bookingId")
     bookingRefNum = int(bookingIdStr)
     for customer in customerList:
             if customer.userId == session["userId"]:
+                if couponId:
+                    for coupon in couponList:
+                        if coupon.couponId == int(couponId):
+                            coupon.status = "used"
+                            payment = payment * (1-coupon.discount)
+                if paymethod == "creditCard":
+                    cardNum = request.form.get("cardNum")
+                    holderName = request.form.get("holderName")
+                    type = request.form.get("type")
+                    expiration = request.form.get("expiration")
+                    newCreditCard = CreditCard(cardNum, holderName,type,expiration)
+                    customer.cardList.append(newCreditCard)
+                    newCreditCard.balance = newCreditCard.balance - payment
+                    
+                if paymethod == "debitCard":
+                    cardNum = request.form.get("cardNum")
+                    holderName = request.form.get("holderName")
+                    type = request.form.get("type")
+                    newDebitCard = DebitCard(cardNum, holderName,type)
+                    customer.cardList.append(newDebitCard)
+                    newDebitCard.balance = newDebitCard.balance - payment
+                    
+                newNotification = Notification("payTicket",f"You have paid ${payment}.Your tickets have been booked successfully! ")
+                customer.notificationList.append(newNotification)
                 bookingList = customer.bookingList
                 for booking in bookingList:
                     if booking.refNum ==  bookingRefNum:
