@@ -88,7 +88,7 @@ def movieDetail(movieId):
             #dateList.append(screen.scheduledDate)
     return render_template('movieDetail.html',movieId=movieId, movieTitle=movieTitle,moviePoster=moviePoster,movieDes=movieDes,
                            movieLang=movieLang,movieRDate=movieRDate,movieCountry=movieCountry,movieRuntime=movieRuntime,movieGenre=movieGenre,isMovieExisted=isMovieExisted,
-                           screens=screens,seatList = seats )
+                           screens=screens,seatList = seats,customerList=customerList )
 @app.route("/manageMovies")
 def manageMovies():
     if session["role"]=="admin":
@@ -119,12 +119,16 @@ def addScreen():
 
 @app.route("/bookTicket", methods=["POST"])
 def bookTicket():
-
-    customerId = session["userId"]
+    if session["role"] == "staff":
+        customerIdStr = request.form.get("customerId")
+        customerId = int(customerIdStr)
+    if session["role"] == "customer":
+        customerId = session["userId"]
     bookingList = []
     for customer in customerList:
         if customer.userId == int(customerId):
-            bookingList = customer.bookingList 
+            bookingList = customer.bookingList
+       
     screenIdList = []
     
     for seat in seatList:
@@ -142,9 +146,16 @@ def bookTicket():
             if request.form.get(f"seat{seat.seatId}{screenId}"):
                 newBooking.seatList.append(seat.seatId)
                 #print(newBooking.seatList)
-         
-       
-    return redirect(url_for("myTickets"))
+    #change seats status
+                for screen in screenList:
+                     if screen.screenId == screenId:
+                       
+                        screen.unavailableSeats.append(seat.seatId)    
+    if session["role"] == "staff":
+        return redirect(url_for("tickets"))
+    if session["role"] == "customer":
+        return redirect(url_for("myTickets")) 
+    
    
 @app.route("/myTickets")
 def myTickets():
@@ -167,10 +178,31 @@ def myTickets():
         return render_template("myTickets.html", bookingList=bookingList,screenList=screenList,movieList=movieListDefault, seatList=seatList,hallList=hallList,coupons=coupons)
     else:
         return redirect(url_for("index"))
+@app.route("/tickets")
+def tickets():
+    if session["role"]=="staff":
+        bookingList =  []
+        for customer in customerList:
+            for booking in customer.bookingList:
+                bookingList.append(booking)
+                booking.payment = 0
+                for seatId in booking.seatList:
+                    for seat in seatList:
+                        if seat.seatId == seatId:
+                            booking.payment += seat.price
+        print(bookingList)
+    
+        return render_template("myTickets.html", bookingList=bookingList,screenList=screenList,movieList=movieListDefault, seatList=seatList,hallList=hallList,customerList=customerList,couponList=couponList)
+    else:
+        return redirect(url_for("index")) 
 
 @app.route("/payTicket",methods=['POST'])
 def payTicket():
-    
+    if session["role"] == "staff":
+        customerIdStr = request.form.get("customerId")
+        customerId = int(customerIdStr)
+    if session["role"] == "customer":
+        customerId = session["userId"]
     paymethod = request.form.get("paymethod")
     paymentStr = request.form.get("payment")
     payment = float(paymentStr)
@@ -181,7 +213,7 @@ def payTicket():
     bookingIdStr = request.form.get("bookingId")
     bookingRefNum = int(bookingIdStr)
     for customer in customerList:
-            if customer.userId == session["userId"]:
+            if customer.userId == customerId:
                 if couponId:
                     for coupon in couponList:
                         if coupon.couponId == int(couponId):
@@ -213,26 +245,39 @@ def payTicket():
                         booking.payStatus = "paid"
                         booking.payment = payment
                         booking.paymethod = paymethod
-    #change seats status
-                        for screen in screenList:
-                            if screen.screenId == booking.screenId:
-                                for seatId in booking.seatList:
-                                    screen.unavailableSeats.append(seatId)
+    # #change seats status
+    #                     for screen in screenList:
+    #                         if screen.screenId == booking.screenId:
+    #                             for seatId in booking.seatList:
+    #                                 screen.unavailableSeats.append(seatId)
 
     
     
-    return redirect(url_for("myTickets"))
+    if session["role"] == "staff":
+        return redirect(url_for("tickets"))
+    if session["role"] == "customer":
+        return redirect(url_for("myTickets")) 
 @app.route("/cancelTicket",methods=['POST'])
 def cancelTicket():
+    if session["role"] == "staff":
+        customerIdStr = request.form.get("customerId")
+        customerId = int(customerIdStr)
+    if session["role"] == "customer":
+        customerId = session["userId"]
     bookingIdStr = request.form.get("bookingId")
     bookingRefNum = int(bookingIdStr)
     for customer in customerList:
-            if customer.userId == session["userId"]:
+            if customer.userId == customerId:
                 bookingList = customer.bookingList
                 for booking in bookingList:
                     if booking.refNum ==  bookingRefNum:
                         if booking.payStatus == 'unpaid':
                             customer.bookingList.remove(booking)
+                            # release seats
+                            for screen in screenList:
+                                if screen.screenId == booking.screenId:
+                                    for seatId in booking.seatList:
+                                        screen.unavailableSeats.remove(seatId)
                         else:
                             # refund
                             if booking.paymethod != "cash":
@@ -249,4 +294,7 @@ def cancelTicket():
                             newNotification = Notification("cancelTicket",f"${booking.payment} refund.Your tickets have been cancelled successfully! ")
                             customer.notificationList.append(newNotification)
                             print(newNotification.content)
-    return redirect(url_for("myTickets"))
+    if session["role"] == "staff":
+        return redirect(url_for("tickets"))
+    if session["role"] == "customer":
+        return redirect(url_for("myTickets")) 

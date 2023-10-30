@@ -41,6 +41,11 @@
             <a class="nav-link" href="{{url_for('myTickets')}}">My Tickets</a>
           </li>
           {%endif%}
+          {% if session["role"] and session["role"]=='staff' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('tickets')}}">Tickets</a>
+          </li>
+          {%endif%}
           {% if not session["username"] %}
           <li class="nav-item">
             <a class="nav-link" type="button"
