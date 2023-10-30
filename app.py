@@ -91,7 +91,7 @@ def movieDetail(movieId):
                            screens=screens,seatList = seats,customerList=customerList )
 @app.route("/manageMovies")
 def manageMovies():
-    if session["role"]=="admin":
+    if "role" in session and session["role"]=="admin":
         return render_template("manageMovies.html", movieListDefault = movieListDefault ,screenList=screenList,hallList=hallList)
     else:
         return redirect(url_for("index"))
@@ -159,7 +159,7 @@ def bookTicket():
    
 @app.route("/myTickets")
 def myTickets():
-    if session["role"]=="customer":
+    if "role" in session and session["role"]=="customer":
         bookingList = []
         coupons = []
        
@@ -180,7 +180,7 @@ def myTickets():
         return redirect(url_for("index"))
 @app.route("/tickets")
 def tickets():
-    if session["role"]=="staff":
+    if "role" in session and session["role"]=="staff":
         bookingList =  []
         for customer in customerList:
             for booking in customer.bookingList:
