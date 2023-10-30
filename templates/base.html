@@ -53,7 +53,9 @@
             data-bs-target="#loginModal">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Register</a>
+            <a class="nav-link" type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#regModal">Register</a>
           </li>
           {%endif%}
           {% if session["username"] %}
@@ -141,6 +143,74 @@
    </div>
  </div>
  <!-- login modal -->
+ <!--Reg Modal -->
+ <div
+ class="modal fade"
+ id="regModal"
+ tabindex="-1"
+ aria-labelledby="loginModalLabel"
+ aria-hidden="true"
+>
+ <div class="modal-dialog modal-dialog-centered">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h1 class="modal-title fs-5" id="loginModalLabel">
+         User Register
+       </h1>
+       <button
+         type="button"
+         class="btn-close"
+         data-bs-dismiss="modal"
+         aria-label="Close"
+       ></button>
+     </div>
+     <div class="modal-body">
+       <form
+         action="/register"
+         method="post"
+         class="needs-validation"
+         novalidate
+       >
+         <div class="mb-3">
+           <label for="email" class="col-form-label">Email:</label>
+           <input
+             type="email"
+             class="form-control"
+             name="email"
+             required
+           />
+           <div class="invalid-feedback">
+             please input a valid email address with "@"
+           </div>
+         </div>
+         <div class="mb-3">
+           <label for="password" class="col-form-label">Password:</label>
+
+           <input
+             type="password"
+             class="form-control"
+             name="password"
+             placeholder="at least 6 characters"
+             minlength="6"
+             required
+           />
+
+         </div>
+         <div class="mb-3">
+           <button
+             type="submit"
+             class="btn btn-primary mb-3"
+             style="margin-left: 40%"
+           >
+             Register
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </div>
+</div>
+<!-- reg modal -->
 </div>
   <div>{% block content %}{% endblock %}</div>
   

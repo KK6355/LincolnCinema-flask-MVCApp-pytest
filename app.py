@@ -45,9 +45,26 @@ def login_post():
             
         else:
             flash("Invalid user name or password!")
+            print("Invalid user name or password!")
+    
+    return redirect(url_for("index")) 
+@app.route("/register", methods=["POST"])
+def register():
+    email = request.form.get("email")
+    password = request.form.get("password")
+    emailList = []
+    for customer in customerList:
+        emailList.append(customer.userName)
+    if email not in emailList:
+        newCus = Customer(email, password)
+        customerList.append(newCus)
+        print(newCus.userName)
+        print(len(customerList))       
+    else:
+        flash("Email exists!Please use another one!") 
+        print("Email exists!Please use another one!")
 
     return redirect(url_for("index")) 
-# public interface logout function
 @app.route("/logout")
 def logout():
     session.pop("username", None)
