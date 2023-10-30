@@ -328,3 +328,31 @@ def cancelScreen():
             screenList.remove(screen)
 
     return redirect(url_for("manageMovies"))
+@app.route("/cancelMovie",methods=['POST'])
+def cancelMovie():
+    movieIdStr = request.form.get("movieId")
+    movieId = int(movieIdStr)
+    bookingList =  []
+    for customer in customerList:
+        for booking in customer.bookingList:
+            bookingList.append(booking)
+    for screen in screenList:
+        if screen.movieId == movieId:
+            for booking in bookingList:
+                if booking.screenId == screen.screenId:
+                    booking.payStatus = "unpaid"
+            
+                    for customer in customerList:
+                        if booking.customerId == customer.userId:
+                            if booking.paymethod != "cash":
+                                card = customer.cardList[0]
+                                card.balance += booking.payment
+                                booking.payment = 0
+                            customer.bookingList.remove(booking)
+            screen.unavailableSeats = []
+            screenList.remove(screen) 
+    for movie in movieListDefault:
+        if movie.movieId == movieId:
+            movieListDefault.remove(movie) 
+
+    return redirect(url_for("manageMovies"))

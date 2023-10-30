@@ -120,6 +120,53 @@
                 </div>
                 
             </div>
+                            <!--cancel screen modal -->
+     <div
+     class="modal fade"
+     id="cancelMovieModal{{movie.movieId}}"
+     tabindex="-1"
+     aria-labelledby="loginModalLabel"
+     aria-hidden="true"
+   >
+     <div class="modal-dialog modal-dialog-centered" style="color: black;">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h1 class="modal-title fs-5" id="loginModalLabel">
+             Cancel Movie
+           </h1>
+           <button
+             type="button"
+             class="btn-close"
+             data-bs-dismiss="modal"
+             aria-label="Close"
+           ></button>
+         </div>
+         <div class="modal-body">
+           <form
+             action="/cancelMovie"
+             method="post"
+             class="needs-validation"
+             novalidate
+           >
+             <input type="hidden" name="movieId" value="{{movie.movieId}}" />
+             <div class="mb-3">
+              <h5>Are you sure you want to cancel this movie?</h5>
+            </div>
+             <div class="mb-3">
+               <button
+                 type="submit"
+                 class="btn btn-primary mb-3"
+                 style="margin-left: 40%"
+               >
+                 Confirm
+               </button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+   <!-- cancel movie modal -->
             {% for screen in screenList%}
                 {%if movie.movieId == screen.movieId%}
                     <div class="row">
@@ -131,7 +178,7 @@
                         </div> 
                                                
                     </div>
-                        <!--cancel screen modal -->
+<!--cancel screen modal -->
      <div
      class="modal fade"
      id="cancelScreen{{screen.screenId}}"
