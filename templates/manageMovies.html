@@ -127,10 +127,57 @@
                             <button class="btn btn-info" disabled>{{screen.scheduledDate}}  {{screen.scheduledTime}}</button>
                             <a type="button"
                     data-bs-toggle="modal"
-                    data-bs-target="#confirmation"><span style="color: rgb(228, 56, 25);font-size: 20px;padding: 10px;"><i class="fas fa-minus-circle"></i></span></a>
+                    data-bs-target="#cancelScreen{{screen.screenId}}"><span style="color: rgb(228, 56, 25);font-size: 20px;padding: 10px;"><i class="fas fa-minus-circle"></i></span></a>
                         </div> 
                                                
                     </div>
+                        <!--cancel screen modal -->
+     <div
+     class="modal fade"
+     id="cancelScreen{{screen.screenId}}"
+     tabindex="-1"
+     aria-labelledby="loginModalLabel"
+     aria-hidden="true"
+   >
+     <div class="modal-dialog modal-dialog-centered" style="color: black;">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h1 class="modal-title fs-5" id="loginModalLabel">
+             Cancel Screen
+           </h1>
+           <button
+             type="button"
+             class="btn-close"
+             data-bs-dismiss="modal"
+             aria-label="Close"
+           ></button>
+         </div>
+         <div class="modal-body">
+           <form
+             action="/cancelScreen"
+             method="post"
+             class="needs-validation"
+             novalidate
+           >
+             <input type="hidden" name="screenId" value="{{screen.screenId}}" />
+             <div class="mb-3">
+              <h5>Are you sure you want to cancel this screen?</h5>
+            </div>
+             <div class="mb-3">
+               <button
+                 type="submit"
+                 class="btn btn-primary mb-3"
+                 style="margin-left: 40%"
+               >
+                 Confirm
+               </button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+   <!-- cancel screen modal -->
                     <br>
                 {%endif%}
             {%endfor%}

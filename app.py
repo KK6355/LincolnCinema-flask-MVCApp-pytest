@@ -109,7 +109,8 @@ def addMovie():
 def addScreen():
     movieIdStr = request.form.get("movieId")
     movieId = int(movieIdStr)
-    hallId = request.form.get("hallId")
+    hallIdStr = request.form.get("hallId")
+    hallId = int(hallIdStr)
     scheduledDate = request.form.get("scheduledDate")
     scheduledTime = request.form.get("scheduledTime")
     newScreen = Screen( movieId, hallId, scheduledDate, scheduledTime)
@@ -298,3 +299,32 @@ def cancelTicket():
         return redirect(url_for("tickets"))
     if session["role"] == "customer":
         return redirect(url_for("myTickets")) 
+
+@app.route("/cancelScreen",methods=['POST'])
+def cancelScreen():
+    screenIdStr = request.form.get("screenId")
+    screenId = int(screenIdStr)
+    bookingList =  []
+    for customer in customerList:
+        for booking in customer.bookingList:
+            bookingList.append(booking)
+    
+    for booking in bookingList:
+        if booking.screenId == screenId:
+            booking.payStatus = "unpaid"
+            
+            for customer in customerList:
+                if booking.customerId == customer.userId:
+                    if booking.paymethod != "cash":
+                        card = customer.cardList[0]
+                        card.balance += booking.payment
+                        booking.payment = 0
+                    customer.bookingList.remove(booking)
+            
+    
+    for screen in screenList:
+        if screen.screenId == screenId:
+            screen.unavailableSeats = []
+            screenList.remove(screen)
+
+    return redirect(url_for("manageMovies"))
