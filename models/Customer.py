@@ -51,6 +51,6 @@ class Customer(User):
     def notificationList(self, notificationList):
         self.__notificationList = notificationList
     def customerInfo(self):
-        return str(self.userId) + " " + self.userName + " " 
+        return self.role + " user: " + self.userName
     
 

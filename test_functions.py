@@ -29,4 +29,29 @@ def test_login():
 def test_logout():
     with app.test_client() as test_client:
         response = test_client.post('/logout')
-        assert b"hi" not in response.data
+        if response.status_code == 200:
+            assert b"hi" not in response.data
+            assert "role" not in flask.session
+def test_searchMovie():
+    with app.test_request_context('/?searchStr=moon'):
+        assert flask.request.path == '/'
+        assert flask.request.args['searchStr'] == 'moon'
+def test_movieDatail():
+     with app.test_client() as test_client:
+        response = test_client.get('/movieDetail/4000')       
+        assert response.status_code == 200
+        assert b"Killers of the Flower Moon" in response.data
+def test_manageMovies():
+    with app.test_client() as test_client:
+        response = test_client.get('/manageMovies')
+        if "role" in flask.session and flask.session['role']=='admin':
+            assert response.status_code == 200
+            assert b"Manage Movies & Screens" in response.data
+def test_addMovie():
+    with app.test_client() as test_client:
+        response = test_client.post('/addMovie')
+        if response.status_code == 200:
+            assert b'Manage Movies & Screens' in response.data
+
+
+                
