@@ -4,6 +4,8 @@ when add new movie, the image and other info will be fetched from movie API, ple
 
 please pip install requests 
 
+pip install python-dotenv
+
 Login credenticals:
 
 Admin: username 'admin@lincoln.com', password '123456'
