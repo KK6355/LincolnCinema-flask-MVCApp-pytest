@@ -1,10 +1,13 @@
 import requests
+from dotenv import load_dotenv
+import os
+load_dotenv()
 class Movie:
     """! The Movie class
     Defines class for movies
     """
     nextId = 4000
-    APIKey = '1015babb'
+    APIKey = os.getenv('APIKey')
     
     def __init__(self,title,language,genre,reDate):
         self.__movieId = Movie.nextId
