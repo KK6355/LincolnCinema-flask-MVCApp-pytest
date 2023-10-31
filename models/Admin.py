@@ -26,4 +26,4 @@ class Admin(User):
 
 
     def adminInfo(self):
-        print(str(self.userId) + " " + self.userName + " " )
+        return self.role + " user: " + self.userName  

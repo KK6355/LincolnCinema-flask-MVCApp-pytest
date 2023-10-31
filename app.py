@@ -15,6 +15,7 @@ from models.CreditCard import CreditCard
 from models.DebitCard import DebitCard
 from models.Notification import Notification
 app = Flask(__name__)
+app.testing = True
 app.secret_key = "admin123"
 @app.route('/')
 def index():

@@ -52,7 +52,7 @@ class Booking:
     # def getPrice(self, discount):
     #     return self.__price * (1-discount)
     def bookingInfo(self):
-        print(f"Ticket Number:{self.refNum}, ticket price:{self.price}, ticket status:{self.payStatus}")
+        return f"Ticket Number:{self.refNum}, ticket price:{self.price}, ticket status:{self.payStatus}"
     # def takeSeat(self, seat:Seat) -> None:
     #     """! The method check if the seat is available, if so take the seat for the ticket and make seat unavailable for others
     #      Otherwise, throw an error when book a ticket .
