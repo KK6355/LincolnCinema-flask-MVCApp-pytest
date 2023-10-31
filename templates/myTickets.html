@@ -111,9 +111,11 @@
            method="post"
            class="needs-validation"
            novalidate
+           onsubmit="return submitForm(this,'Tickets fee will be charged!','Your seats have been reserved successfully');"
          >
          <input type="hidden" name="bookingId" value="{{booking.refNum}}" />
          <input type="hidden" name="payment" value="{{booking.payment}}" />
+         <input type="hidden" name="Pay" value="Pay" />
          {% if session["role"]=='staff'%}
          <input type="hidden" name="customerId" value="{{booking.customerId}}" />
          {%endif%}
@@ -139,9 +141,7 @@
                   Cash
                 </label>
               </div>
-             <!-- <div class="invalid-feedback">
-               please input a valid email address with "@"
-             </div> -->
+             
            </div>
            <div style="display: block;">
            <div class="mb-3">
@@ -245,7 +245,7 @@
                 <br>
                 <div class="row">
                     <div class="col">
-                        <form action="/cancelTicket" method="post">
+                        <form action="/cancelTicket" method="post"  onsubmit="return submitForm(this,'Are you sure you want to cancel your tickets?','Your tickets have been cancelled successfully');">
                           {% if session["role"]=='staff'%}
                           <input type="hidden" name="customerId" value="{{booking.customerId}}" />
                           {%endif%}

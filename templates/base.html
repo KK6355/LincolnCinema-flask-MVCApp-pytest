@@ -257,5 +257,32 @@
   
   }
   </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    function submitForm(form,confirmMsg,successMsg){
+      swal({
+  title: "Please Confirm",
+  text: confirmMsg,
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((isOkay) => {
+  if (isOkay) {
+    // form.submit();
+    swal(successMsg, {
+      icon: "success",
+    }).then( (isOkay) => {
+  if (isOkay) {
+    form.submit();
+  }})
+    
+  } 
+})
+
+return false;
+    }
+  </script>
+  
 </body>
 </html>

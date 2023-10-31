@@ -216,6 +216,7 @@ def tickets():
 
 @app.route("/payTicket",methods=['POST'])
 def payTicket():
+    
     if session["role"] == "staff":
         customerIdStr = request.form.get("customerId")
         customerId = int(customerIdStr)
@@ -256,6 +257,7 @@ def payTicket():
                     
                 newNotification = Notification("payTicket",f"You have paid ${payment}.Your tickets have been booked successfully! ")
                 customer.notificationList.append(newNotification)
+               
                 print(newNotification.content)
                 bookingList = customer.bookingList
                 for booking in bookingList:
