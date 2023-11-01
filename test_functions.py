@@ -71,5 +71,49 @@ def test_addScreen():
             assert b'Manage Movies & Screens' in response.data
             assert len(screenList) == 10
             assert screenList[len(screenList)-1].movieId == 4000
+def test_cancelScreen():
+    with app.test_client() as test_client:
+        response = test_client.post('/cancelScreen',data={"screenId":5009})
+        if response.status_code == 200:
+            assert b'Manage Movies & Screens' in response.data
+            assert len(screenList) == 9
+           
+def test_cancelMovie():
+    with app.test_client() as test_client:
+        response = test_client.post('/cancelMovie',data={"movieId":4004})
+        if response.status_code == 200:
+            assert b'Manage Movies & Screens' in response.data
+            assert len(movieListDefault) == 4
+            assert movieListDefault[len(movieListDefault)-1].movieId == 4003
+def test_bookTicket():
+    with app.test_client() as test_client:
+        response = test_client.get('/movieDetail/4000')       
+        if "role" in flask.session:
+           assert  response.status_code == 200
+           response2 = test_client.post("/bookTicket",data={"screenId":5000,"customerId":3000})
+           if response2.status_code == 200:
+                assert b"Tickets" in response2.data
+                bookings = []
+                for customer in customerList:
+                    if customer.userId == 3000:
+                       customer.bookingList = bookings
+                assert len(bookings) == 1
+def test_payTicket():
+    with app.test_client() as test_client:
+        response = test_client.get('/movieDetail/4000')       
+        if "role" in flask.session:
+           assert  response.status_code == 200
+           response2 = test_client.post("/payTicket",data={"refNum":8000})
+           if response2.status_code == 200:
+                assert b"Tickets" in response2.data
+                bookings = []
+                for customer in customerList:
+                    if customer.userId == 3000:
+                       for booking in customer.bookingList:
+                           if booking.refNum == 8000:
+                                assert booking.payStatus == "paid"
+                                   
 
-                
+            
+
+        
