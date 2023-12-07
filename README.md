@@ -6,11 +6,5 @@ please pip install requests
 
 pip install python-dotenv
 
-Login credenticals:
 
-Admin: username 'admin@lincoln.com', password '123456'
-
-Staff: username 'staff@lincoln.com', password '123456'
-
-customer: username 'vicky@gmail.com', password '123456'
 
